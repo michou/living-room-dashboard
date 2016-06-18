@@ -26,7 +26,7 @@ def get_icon_name(condition_json):
 
 def get_current_condition_payload(observation_json):
 	result = {}
-	result['temp'] = observation_json[u'main'][u'temp']
+	result['temp'] = int(round(observation_json['main']['temp']))
 	result['icon'] = get_icon_name(observation_json['weather'][0])
 	result['description'] = observation_json['weather'][0]['description'].capitalize()
 	result['wind'] = observation_json['wind']['speed']
@@ -37,8 +37,9 @@ def get_forecast_payload(forecast_json):
 	result = []
 	for single_json in forecast_json['list']:
 		entry = {}
-		entry['temp_min'] = single_json['main']['temp_min']
-		entry['temp_max'] = single_json['main']['temp_max']
+		entry['temp_min'] = int(round(single_json['main']['temp_min']))
+		entry['temp_max'] = int(round(single_json['main']['temp_max']))
+		entry['temp'] = int(round(single_json['main']['temp']))
 		entry['icon'] = get_icon_name(single_json['weather'][0])
 		entry['description'] = single_json['weather'][0]['description'].capitalize()
 		entry['wind'] = single_json['wind']['speed']
@@ -74,13 +75,17 @@ def fetch_forecast(conf):
 
 @get('/')
 def index():
-	# current_json =  fetch_current_conditions(conf)
-	# forecast_json = fetch_forecast(conf)
-
 	current_payload = fetch_current_conditions(conf)
 	forecast_payload = fetch_forecast(conf)
 
-	return template('index.tpl',
+	return template('index.tpl')
+
+@get('/data')
+def data():
+	current_payload = fetch_current_conditions(conf)
+	forecast_payload = fetch_forecast(conf)
+
+	return template('data-stub.tpl',
 		current=current_payload,
 		forecast=forecast_payload
 		)
