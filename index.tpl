@@ -10,6 +10,7 @@
 		margin: 0;
 		padding: 0;
 		font-family: sans-serif;
+		overflow: hidden;
 	}
 	.backdrop {
 		background: url('https://farm7.staticflickr.com/6203/6074810680_d4bb65667e_o_d.jpg');
