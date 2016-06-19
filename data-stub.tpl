@@ -18,7 +18,7 @@
 		</div>
 		<div class="details">
 			<i class="wi wi-fw {{e['icon']}}"></i>
-			{{e['temp']}}&deg;C {{e['description']}}
+			<span class="temperature">{{e['temp']}}&deg;C</span> {{e['description']}}
 		</div>
 	</div>
 	% end

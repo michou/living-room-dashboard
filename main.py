@@ -20,14 +20,17 @@ class Configuration(object):
 		self.weather_api_key = config_json['weather_api_key']
 		self.location_id = config_json['location_id']
 
-def get_icon_name(condition_json):
-	tod_prefix = 'day' if condition_json['icon'][-1] == 'd' else 'night'
+def get_icon_name(condition_json, is_day):
+	tod_prefix = 'day' if is_day else 'night'
 	return 'wi-owm-%s-%s' % (tod_prefix, condition_json['id'])
 
 def get_current_condition_payload(observation_json):
 	result = {}
 	result['temp'] = int(round(observation_json['main']['temp']))
-	result['icon'] = get_icon_name(observation_json['weather'][0])
+
+	local_time = datetime.fromtimestamp(observation_json['dt']) + UTC_OFFSET
+	result['icon'] = get_icon_name(observation_json['weather'][0], 6 <= local_time.hour < 21)
+
 	result['description'] = observation_json['weather'][0]['description'].capitalize()
 	result['wind'] = observation_json['wind']['speed']
 
@@ -40,11 +43,12 @@ def get_forecast_payload(forecast_json):
 		entry['temp_min'] = int(round(single_json['main']['temp_min']))
 		entry['temp_max'] = int(round(single_json['main']['temp_max']))
 		entry['temp'] = int(round(single_json['main']['temp']))
-		entry['icon'] = get_icon_name(single_json['weather'][0])
 		entry['description'] = single_json['weather'][0]['description'].capitalize()
 		entry['wind'] = single_json['wind']['speed']
 		local_time = datetime.fromtimestamp(single_json['dt']) + UTC_OFFSET
 		entry['time'] = local_time.time().strftime("%H:%M")
+		
+		entry['icon'] = get_icon_name(single_json['weather'][0], 6 <= local_time.hour < 21)
 
 		result.append(entry)
 

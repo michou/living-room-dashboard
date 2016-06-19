@@ -44,8 +44,8 @@
 	}
 	.slug .time {
 		text-align: center;
-		font-weight: 700;
-		background: silver;
+		xfont-weight: 700;
+		background: rgba(128, 128, 128, 0.5);
 		width: 3em;
 	}
 	.slug .details {
@@ -56,9 +56,12 @@
 		display: inline-block;
 		padding: .5em;
 	}
+	.slug .temperature {
+		font-weight: 700;
+	}
 	.card,
 	.slug {
-		background-color: rgba(255, 255, 255, 0.75);
+		background-color: rgba(255, 255, 255, 0.5);
 	}
 	.forecast {
 		display: inline-block;
